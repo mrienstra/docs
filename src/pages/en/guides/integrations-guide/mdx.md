@@ -82,7 +82,7 @@ Finally, restart the dev server.
 
 ## Usage
 
-You can [add MDX pages to your project](/en/guides/markdown-content/) by adding `.mdx` files within your `src/pages/` directory.
+You can [add MDX pages to your project](/en/guides/markdown-content/#markdown-and-mdx-pages) by adding `.mdx` files within your `src/pages/` directory.
 
 ### Components
 
@@ -108,7 +108,7 @@ export const title = 'My first MDX post'
 # {title}
 ```
 
-This `title` will be accessible from `import` and [glob](/en/reference/api-reference/) statements as well:
+This `title` will be accessible from `import` and [glob](/en/reference/api-reference/#astroglob) statements as well:
 
 ```astro
 ---
@@ -123,7 +123,7 @@ See [the official "how MDX works" guide](https://mdxjs.com/docs/using-mdx/#how-m
 
 ### Exported properties
 
-Alongside your [MDX variable exports](https://github.com/withastro/astro/tree/main/packages/integrations/mdx/#variables), we generate a few helpful exports as well. These are accessible when importing an MDX file via `import` statements or [`Astro.glob`](/en/reference/api-reference/).
+Alongside your [MDX variable exports](https://github.com/withastro/astro/tree/main/packages/integrations/mdx/#variables), we generate a few helpful exports as well. These are accessible when importing an MDX file via `import` statements or [`Astro.glob`](/en/reference/api-reference/#astroglob).
 
 #### `file`
 
@@ -154,7 +154,7 @@ publishDate: '21 September 2022'
 # {frontmatter.title}
 ```
 
-Now, this `title` and `publishDate` will be accessible from `import` and [glob](/en/reference/api-reference/) statements via the `frontmatter` property. This matches the behavior of [plain markdown in Astro](/en/reference/api-reference/) as well!
+Now, this `title` and `publishDate` will be accessible from `import` and [glob](/en/reference/api-reference/#astroglob) statements via the `frontmatter` property. This matches the behavior of [plain markdown in Astro](/en/reference/api-reference/#markdown-files) as well!
 
 ```astro
 ---
@@ -197,6 +197,7 @@ export default {
   integrations: [
     mdx({
       remarkPlugins: [exampleRemarkPlugin],
+      extendDefaultPlugins: true,
     }),
   ],
 };
@@ -407,7 +408,7 @@ import shikiTwoslash from 'remark-shiki-twoslash';
 
 export default {
   markdown: {
-  syntaxHighlight: false,
+    syntaxHighlight: false,
   },
   integrations: [mdx({
     remarkPlugins: [shikiTwoslash, { /* Shiki Twoslash config */ }],
@@ -460,7 +461,7 @@ export default {
 
 #### `markdown` (default)
 
-By default, Astro inherits all [remark](https://github.com/withastro/astro/tree/main/packages/integrations/mdx/#remarkPlugins) and [rehype](https://github.com/withastro/astro/tree/main/packages/integrations/mdx/#rehypePlugins) plugins from [the `markdown` option in your Astro config](/en/guides/markdown-content/). This also respects the [`markdown.extendDefaultPlugins`](/en/reference/configuration-reference/) option to extend Astro's defaults. Any additional plugins you apply in your MDX config will be applied *after* your configured Markdown plugins.
+By default, Astro inherits all [remark](https://github.com/withastro/astro/tree/main/packages/integrations/mdx/#remarkPlugins) and [rehype](https://github.com/withastro/astro/tree/main/packages/integrations/mdx/#rehypePlugins) plugins from [the `markdown` option in your Astro config](/en/guides/markdown-content/#markdown-plugins). This also respects the [`markdown.extendDefaultPlugins`](/en/reference/configuration-reference/#markdownextenddefaultplugins) option to extend Astro's defaults. Any additional plugins you apply in your MDX config will be applied *after* your configured Markdown plugins.
 
 This example applies [`remark-toc`](https://github.com/remarkjs/remark-toc) to Markdown *and* MDX, and [`rehype-minify`](https://github.com/rehypejs/rehype-minify) to MDX alone:
 
@@ -473,6 +474,7 @@ export default {
   markdown: {
     // Applied to .md and .mdx files
     remarkPlugins: [remarkToc],
+    extendDefaultPlugins: true,
   },
   integrations: [mdx({
     // Applied to .mdx files only
@@ -483,7 +485,7 @@ export default {
 
 #### `astroDefaults`
 
-You may *only* want to extend [Astro's default plugins](/en/reference/configuration-reference/) without inheriting your Markdown config. This example will apply the default [GitHub-Flavored Markdown](https://github.com/remarkjs/remark-gfm) and [Smartypants](https://github.com/silvenon/remark-smartypants) plugins alongside [`remark-toc`](https://github.com/remarkjs/remark-toc):
+You may *only* want to extend [Astro's default plugins](https://github.com/withastro/astro/blob/main/packages/markdown/remark/src/index.ts#L27) without inheriting your Markdown config. This example will apply the default [GitHub-Flavored Markdown](https://github.com/remarkjs/remark-gfm) and [Smartypants](https://github.com/silvenon/remark-smartypants) plugins alongside [`remark-toc`](https://github.com/remarkjs/remark-toc):
 
 ```js "extendPlugins: 'astroDefaults'"
 // astro.config.mjs
